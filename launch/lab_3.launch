@@ -1,0 +1,26 @@
+<launch>
+
+<!--Arguments for running bag and map-->
+<arg name="bag_path" default="$(find lab_3)/bag_data/glennan_5_complete.bag" />
+<arg name="bag_arg" default="/tf_trajectory:=/tf --clock" />
+<arg name="map_path" default="$(find maps_glennan)/maps/glennan5_map.yaml" />
+
+<!--Calls navvis_description launch file with changed parameters.-->
+<include file="$(find navvis_description)/launch/display.launch" >
+    <arg name="use_xacro" value="true" />
+    <arg name="file" value="$(find lab_3)/urdf/updated_xacro.xacro" />
+    <arg name="use_gui" value="true" />
+    <arg name="use_robot_state_publisher" value="true" />
+    <arg name="rviz_config" default="true" />
+</include>
+
+<!--Calls rosbag and map_server-->
+<node pkg="rosbag" type="play" name="rosbag" args="$(arg bag_path) $(arg bag_arg)" />
+<node pkg="map_server" type="map_server" name="map_server" args="$(arg map_path)" />
+
+<!--Publishes the wheels to the static_transform_publisher-->
+<node pkg="tf2_ros" type="static_transform_publisher" name="wheel_center_broadcaster" args="0.1 0 0 -1.57079632679 0 0 base wheel_center"/>
+<node pkg="tf2_ros" type="static_transform_publisher" name="wheel_left_broadcaster" args="-0.1 0.4 0 -1.57079632679 0 0 base wheel_left"/>
+<node pkg="tf2_ros" type="static_transform_publisher" name="wheel_right_broadcaster" args="-0.1 0.4 0 -1.57079632679 0 0 base wheel_right"/>
+
+</launch>

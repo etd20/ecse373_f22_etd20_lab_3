@@ -1,0 +1,11 @@
+<launch>
+
+<include file="$(find navvis_description)/launch/display.launch" >
+    <arg name="use_xacro" value="true" />
+    <arg name="file" value="$(find navvis_description)/urdf/navvis_xacro.xacro" />
+    <arg name="use_gui" value="true" />
+    <arg name="use_robot_state_publisher" value="true" />
+    <arg name="rviz_config" default="false" />
+</include>
+
+</launch>
